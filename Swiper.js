@@ -63,7 +63,9 @@ class Swiper extends Component {
 
   componentWillReceiveProps = (newProps) => {
     this.setState({
-      ...this.calculateCardIndexes(newProps.cardIndex, newProps.cards),
+      ...(newProps.cardIndex
+        ? this.calculateCardIndexes(newProps.cardIndex, newProps.cards)
+        : null),
       cards: newProps.cards,
       previousCardX: new Animated.Value(newProps.previousCardInitialPositionX),
       previousCardY: new Animated.Value(newProps.previousCardInitialPositionY),
