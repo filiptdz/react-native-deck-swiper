@@ -67,16 +67,15 @@ class Swiper extends Component {
     let newFirstCardIndex = newProps.cards.findIndex(card =>
       isEqual(card, this.props.cards[firstCardIndex]),
     );
-    // If the card has been deleted, go to the second cards position. To achieve that, we
-    // pass the index of the card previous to the second card.
+    // If the card has been deleted, go to the second cards position.
     if (newFirstCardIndex === -1) {
-      newFirstCardIndex =
-        newProps.cards.findIndex(card => isEqual(card, this.props.cards[secondCardIndex])) - 1;
-    }
-    // Because we are decrementing -1 from the cardIndex previously
-    if (newFirstCardIndex + 1 === -1) {
-      // If it still doesn't exist, go back to the first position.
-      newFirstCardIndex = 0;
+      newFirstCardIndex = newProps.cards.findIndex(card =>
+        isEqual(card, this.props.cards[secondCardIndex]),
+      );
+      if (newFirstCardIndex === -1) {
+        // If it still doesn't exist, go back to the first position.
+        newFirstCardIndex = 0;
+      }
     }
     this.setState({
       ...(newProps.cardIndex
