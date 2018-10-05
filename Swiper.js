@@ -62,8 +62,21 @@ class Swiper extends Component {
   }
 
   componentWillReceiveProps = (newProps) => {
+    const { firstCardIndex, secondCardIndex } = this.state;
+    // Finds the position of the card in the new deck which is equal to the previous first card
+    let newFirstCardIndex = newProps.cards.findIndex(card =>
+      isEqual(card, this.props.cards[firstCardIndex]),
+    );
+    // If the card has been deleted, go to the second cards position
+    if (newFirstCardIndex === -1) {
+      newFirstCardIndex = newProps.cards.findIndex(card =>
+        isEqual(card, this.props.cards[secondCardIndex]),
+      );
+    }
     this.setState({
-      ...this.calculateCardIndexes(newProps.cardIndex, newProps.cards),
+      ...(newProps.cardIndex
+        ? this.calculateCardIndexes(newProps.cardIndex, newProps.cards)
+        : this.calculateCardIndexes(newFirstCardIndex, newProps.cards)),
       cards: newProps.cards,
       previousCardX: new Animated.Value(newProps.previousCardInitialPositionX),
       previousCardY: new Animated.Value(newProps.previousCardInitialPositionY),
@@ -871,7 +884,7 @@ Swiper.defaultProps = {
   animateOverlayLabelsOpacity: false,
   backgroundColor: '#4FD0E9',
   cardHorizontalMargin: 20,
-  cardIndex: 0,
+  cardIndex: null,
   cardStyle: {},
   cardVerticalMargin: 60,
   childrenOnTop: false,
